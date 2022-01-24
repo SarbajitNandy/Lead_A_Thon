@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express")
 const client = require("./fetchFromWeb")
 var app = express();
@@ -18,14 +19,14 @@ router.get("/:code", async(req,res) => {
 })
 
 app.use("/api", router);
-
-app.listen(3000,async ()=> {
+const port = process.env.PORT || 3000;
+app.listen(port,async ()=> {
     try {
         await client.fetch();
     } catch(err) {
         console.error(err.message);
         throw err;
     }
-    console.log("Server is running @3000");
+    console.log(`Server is running @${port}`);
     // console.log(client.getDataByMoveName("C87"));
 })
