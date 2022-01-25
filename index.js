@@ -1,14 +1,24 @@
 require("dotenv").config()
 const express = require("express")
 const client = require("./fetchFromWeb")
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const path = require("path")
 var app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.get("/", (req,res) => {
+    const fileDir = path.join(__dirname, 'public');
+
+    res.sendFile("index.html", {root:fileDir}, err=> {
+        res.end();
+        // if (err)
+    })
+})
 
 var router = express.Router()
 
 router.get("/", async(req,res) => {
     // console.log("get");
-    res.status(200).json({all: client.getAll()})
+    res.status(200).json(client.getAll())
 })
 router.get("/:code", async(req,res) => {
     const {code} = req.params;
@@ -21,6 +31,12 @@ router.get("/:code", async(req,res) => {
 })
 
 app.use("/api", router);
+
+app.all("*", (req,res)=> {
+    res.status(404).json({message: `Invalid request for ${req.url}`})
+})
+
+
 const port = process.env.PORT || 3000;
 app.listen(port,async ()=> {
     try {
