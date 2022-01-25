@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const client = require("./fetchFromWeb")
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 var app = express();
 
 var router = express.Router()
@@ -27,6 +28,16 @@ app.listen(port,async ()=> {
         console.error(err.message);
         throw err;
     }
+    // try {
+        // fetch('https://www.chessgames.com/chessecohelp.html')
+        // .then( async resp => {
+        //     const body = await resp.text()
+        // });
+        // const body = await resp.text();
+        // console.log(body);
+    // } catch (error) {
+        
+    // }
     console.log(`Server is running @${port}`);
     // console.log(client.getDataByMoveName("C87"));
 })
