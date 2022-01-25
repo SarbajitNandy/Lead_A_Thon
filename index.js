@@ -13,10 +13,11 @@ router.get("/", async(req,res) => {
 router.get("/:code", async(req,res) => {
     const {code} = req.params;
     const move = client.getDataByMoveCode(code);
-    if (move==undefined) {
+    if (move===undefined) {
         res.status(404).json({message: "Code not found"})
+        res.end();
     }
-    res.status(200).json(move)
+    else res.status(200).json(move.toObject())
 })
 
 app.use("/api", router);

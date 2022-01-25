@@ -79,5 +79,5 @@ module.exports = {
         })
     },
     getAll : () => Object.values(fetchedData).map(each => each.toObject()),
-    getDataByMoveCode : (moveName) => fetchedData[moveName].toObject()
+    getDataByMoveCode : (moveName) => fetchedData[moveName]
 }
