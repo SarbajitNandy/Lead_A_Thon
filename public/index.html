@@ -14,11 +14,16 @@
       }
       #newTable tr {
         padding: 5px;
+        border : 1px solid whitesmoke;
+      }
+
+      #newTable tr:nth-child(odd) {
+        background-color: #0D0D0D;
       }
     </style>
   </head>
   <body>
-      <div class="container col-6 bg-dark px-0" style="height:100vh" >
+      <div class="container bg-dark px-0" style="height:100vh" >
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #1FAA59; width:100%">
           <div class="container">
             <a class="navbar-brand mb-0 h1" href="#">
@@ -33,7 +38,7 @@
           <input type="text" name="Name" id="name" placeholder="Enter the move name"/>
           <button id="submit_btn" class="btn btn-outline-light" onclick="getCode()">Show All</butto>
         </div>
-        <div id="newTable" class="d-flex justify-content-center text-light text-aling-center" style="max-height:84vh;overflow-y: scroll;"></div>
+        <div id="newTable" class="d-flex justify-content-center text-light text-center text-wrap p-10 mt-10" style="max-height:84vh;overflow-y: scroll;"></div>
       </div>
       
     <script src="./script.js"></script>

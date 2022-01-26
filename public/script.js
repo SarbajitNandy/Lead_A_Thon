@@ -88,7 +88,7 @@ function addTable(data) {
     var tdCode = document.createElement("TD");
     tdCode.width = "75";
     var tdName = document.createElement("TD");
-    tdName.width = "200";
+    tdName.width = "500";
     var tdData = document.createElement("TD");
     tdData.width = "1000";
 
