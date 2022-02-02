@@ -2,6 +2,18 @@ require("dotenv").config()
 const express = require("express")
 const client = require("./fetchFromWeb")
 const path = require("path")
+
+const mongoose = require('mongoose');
+if (process.env.MONGO==1)
+main().catch(err => console.log(err));
+else console.log("Mongodb not required");
+
+async function main() {
+	  await mongoose.connect('mongodb://mongo:27017/test');
+	console.log("DB Connected");
+}
+
+
 var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
