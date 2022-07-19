@@ -4,6 +4,3 @@ services:
     build: .
     ports:
       - "8000:8000"
-  mongo:
-    image: mongo:4.4.12-focal
-    restart: always

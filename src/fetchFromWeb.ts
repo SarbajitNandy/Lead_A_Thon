@@ -1,10 +1,9 @@
-// const request = require("request-promise")
-const fetch = require("node-fetch")
-const cheerio = require("cheerio")
-const ChessMove = require("./model");
+import axios from "axios";
+import * as cheerio from "cheerio";
+import ChessMove from "./model";
 
 const link = 'https://www.chessgames.com/chessecohelp.html'
-var fetchedData = {};
+var fetchedData: {[key:string]:ChessMove} = {};
 
 // module.exports = {
 //     fetch : () => {
@@ -48,36 +47,36 @@ var fetchedData = {};
 //     getAll : () => Object.values(fetchedData).map(each => each.toObject()),
 //     getDataByMoveCode : (moveName) => fetchedData[moveName].toObject()
 // }
+const fetch = () => {
+    return new Promise( async (resolve,reject) => {
+        try {
+            const resp =await axios(link);
+            const html = await resp.data;
+            const $ = cheerio.load(html);
+        
+                const datarow = $("table tbody tr");
+                // let l = {};
+                datarow.each((r:number,data:any) => {
+                    
+                    for (let c = 0; c < 2; c++) {
+                        const first = $(data.children[0]).text();
+                        const second = $(data.children[1]).text();
+                        // const [s1,s2] = second.split("\n");
+                        // l[fis]=$(second).text();
+                        // console.log(second.split("\n"));
+                        const s = second.split("\n");
+                        fetchedData[first]=new ChessMove(first, s[0],s[1]);
+                    }
+                    
+                })
+                resolve(true);
+        } catch (error) {
+            reject(error);
+        } 
+    })
+};
 
-module.exports = {
-    fetch : () => {
-        return new Promise( async (resolve,reject) => {
-            try {
-                const resp =await fetch(link);
-                const html = await resp.text();
-                const $ = cheerio.load(html);
-            
-                    const datarow = $("table tbody tr");
-                    // let l = {};
-                    datarow.each((r,data) => {
-                        
-                        for (let c = 0; c < 2; c++) {
-                            const first = $(data.children[0]).text();
-                            const second = $(data.children[1]).text();
-                            // const [s1,s2] = second.split("\n");
-                            // l[fis]=$(second).text();
-                            // console.log(second.split("\n"));
-                            const s = second.split("\n");
-                            fetchedData[first]=new ChessMove(first, s[0],s[1]);
-                        }
-                        
-                    })
-                    resolve(true);
-            } catch (error) {
-                reject(error);
-            } 
-        })
-    },
-    getAll : () => Object.values(fetchedData).map(each => each.toObject()),
-    getDataByMoveCode : (moveName) => fetchedData[moveName]
-}
+const getAll = ():Object[] => Object.values(fetchedData).map(each => each.toObject());
+const getDataByMoveCode = (moveName:string) => fetchedData[moveName];
+
+export { fetch,getAll,getDataByMoveCode }

@@ -1,5 +1,8 @@
-class ChessMove {
-    constructor(moveCode, moveName, data) {
+export default class ChessMove {
+    private _moveCode: string;
+    private _moveName: string;
+    private _data : any;
+    constructor(moveCode:string, moveName:string, data:any) {
         this._moveCode=moveCode;
         this._moveName=moveName;
         this._data=data;
@@ -15,5 +18,3 @@ class ChessMove {
         }
     }
 }
-
-module.exports=ChessMove

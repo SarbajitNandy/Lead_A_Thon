@@ -1,23 +1,39 @@
 require("dotenv").config()
-const express = require("express")
-const client = require("./fetchFromWeb")
-const path = require("path")
+import express, { Express, Router, Response, Request } from "express";
+import * as client  from "./fetchFromWeb";
+import path from "path";
 
-const mongoose = require('mongoose');
-if (process.env.MONGO==1)
-main().catch(err => console.log(err));
-else console.log("Mongodb not required");
+// const mongoose = require('mongoose');
 
-async function main() {
-	  await mongoose.connect('mongodb://mongo:27017/test');
-	console.log("DB Connected");
-}
+// const {Client} = require("pg")
+
+// const pgclient = new Client({
+//     user: 'postgres',
+//     host: 'pdb',
+//     database: 'postgres',
+//     password: 'postgres@1234',
+//     port: 5432,
+// })
+
+// pgclient.connect(function(err) {
+//     if (err) throw err;
+//     console.log("Connected!");
+//   });
+
+// if (process.env.MONGO==1)
+// main().catch(err => console.log(err));
+// else console.log("Mongodb not required");
+
+// async function main() {
+// 	  await mongoose.connect('mongodb://mongo:27017/test');
+// 	console.log("DB Connected");
+// }
 
 
-var app = express();
+var app:Express = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.get("/", (req,res) => {
+app.get("/", (req:Request,res:Response) => {
     const fileDir = path.join(__dirname, 'public');
 
     res.sendFile("index.html", {root:fileDir}, err=> {
@@ -49,11 +65,12 @@ app.all("*", (req,res)=> {
 })
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 app.listen(port,async ()=> {
     try {
         await client.fetch();
-    } catch(err) {
+    } catch(error) {
+        let err = (error as Error);
         console.error(err.message);
         throw err;
     }
